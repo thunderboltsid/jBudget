@@ -8,7 +8,7 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-env.hosts=['root@46.101.217.148']
+env.hosts=['root@0.0.0.0'] # Add the host
 def deploy():
     with cd("/vagrant/"):
         run("git stash")

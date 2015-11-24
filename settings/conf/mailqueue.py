@@ -1,2 +1,0 @@
-MAILQUEUE_CELERY = True
-BROKER_URL = 'django://'

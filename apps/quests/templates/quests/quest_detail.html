@@ -2,33 +2,16 @@
 {% load static %}
 {% block content %}
     <div layout="column">
-        <style>
-            body {
-                opacity: 0.9;
-            }
-        </style>
-        <img src="{% static 'common/questmenue.svg' %}"
-             style=" position:fixed;
-         width:100%;
-         top:0;
-         left:0;
-         z-index: -1;
-         ">
+        <div layout="column">
+            <h1 class="md-display-1">{{ object.title }}</h1>
+            <p class="md-body-2" style="text-align: center;">{{ object.description }}</p>
+            <p class="md-body-1" style="text-align: center;">{{ object.users.count }} users already completed this
+                quest</p>
 
-        <div style="padding:10px; width: 60vw; opacity: 0.7">
-            <div layout="column">
-                <h1 class="md-display-1">{{ object.title }}</h1>
-
-
-                <p class="md-body-2" style="text-align: center;">{{ object.description }}</p>
-
-                <p class="md-body-1" style="text-align: center;">{{ object.users.count }} users already completed this
-                    quest</p>
-                <md-button id="completeQuest"
-                           style="color:white;font-weight:bold;background-color:rgba(226, 175, 1, 0.8);"
-                           class="md-primary md-raised">Complete Quest
-                </md-button>
-            </div>
+            <md-button id="completeQuest"
+                       style="color:white;font-weight:bold;background-color:rgba(226, 175, 1, 0.8);"
+                       class="md-primary md-raised">Complete Quest
+            </md-button>
         </div>
     </div>
     <script type="text/javascript">
@@ -59,7 +42,7 @@
                             $("#completeQuest").css("background-color", "#0F0");
                             $("#completeQuest").text(data.message);
                             setTimeout(function () {
-                                window.location="/quests/";
+                                window.location = "/quests/";
                             }, 5000);
                         } else {
                             $("#completeQuest").text(data.message);

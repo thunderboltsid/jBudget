@@ -26,3 +26,4 @@ app/jspm_packages
 *.pyc
 
 apps/legacy/account/account_dump.json
+*.yml

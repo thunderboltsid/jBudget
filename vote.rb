@@ -11,14 +11,18 @@ get '/' do
   erb :index
 end
 
+
 post '/cast' do
   @title = 'Thanks for casting your vote!'
-  @vote  = params['vote']
   @store = YAML::Store.new 'votes.yml'
-  @store.transaction do
-    @store['votes'] ||= {}
-    @store['votes'][@vote] ||= 0
-    @store['votes'][@vote] += 1
+  Choices.each do |id,text|
+  	print id
+  	print text
+  	@store.transaction do
+	  	@store[id] ||= {"key"=> id, "values"=> []}
+	  	# @store[id]["values"] || []
+		@store[id]["values"] = params[text]
+	end
   end
   erb :cast
 end

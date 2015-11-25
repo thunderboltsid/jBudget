@@ -1,6 +1,10 @@
 require 'sinatra'
 require 'yaml/store'
 
+
+set :public_folder, File.dirname(__FILE__)
+
+
 get '/' do
   @title = 'jBudget - Democratizing financial decision making'
   @poll = 'How much budget do you want to go to:'

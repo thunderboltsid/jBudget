@@ -1,0 +1,44 @@
+<p><%= @poll %></p>
+<div style="display:flex;">
+  <form action='cast' method='post' style="flex-grow:1">
+    <ul class='unstyled'>
+      <% Choices.each do |id, text| %>
+        <li>
+          <div style="display:flex;justify-content:space-between;width:40vw">
+            <label>
+              <%= id %>:
+            </label>
+            <input style="width:40px" type='number' min='0' max='100' name='vote' value='<%= text %>' id='vote_<%= id %>' />
+          </div>
+        </li>
+      <% end %>
+    </ul>
+    <button type='submit' class='btn btn-primary'>Cast this vote!</button>
+  </form>
+  <div id="chart" style="flex-grow:1">
+    <svg>
+    </svg>
+  </div>
+</div>
+<script type="text/javascript">
+var data = [<% Choices.each do |id, text| %> {"label":"<%= id %>", "value":"<%= text %>"},<% end %>];
+console.log(data);
+nv.addGraph(function() {
+  var chart = nv.models.pieChart()
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .showLabels(true);
+
+    d3.select("#chart svg")
+        .datum(data)
+      .transition().duration(1200)
+        .call(chart);
+
+  return chart;
+});
+</script>
+<style type="text/css">
+#chart svg {
+  height: 400px;
+}
+</style>

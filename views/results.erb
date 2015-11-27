@@ -1,10 +1,29 @@
-<table class='table table-hover table-striped'>
-  <% Choices.each do |id, text| %>
-    <tr>
-      <th><%= id %></th>
-      <td><%= @votes[text] || 0 %>
-      <td><%= '#' * (@votes[id] || 0) %></td>
-    </tr>
-  <% end %>
-</table>
+<div style="display:flex; justify-content: space-between">
+	<table id="results" style="flex-grow:1" class='table table-hover table-striped'>
+	  <% Choices.each do |id, text| %>
+	    <tr>
+	      <th><%= id %></th>
+	      <td><%= @vote[id] || 0 %>
+	    </tr>
+	  <% end %>
+	</table>
+	<div id="chart" style="flex-grow:2">
+	    <svg>
+	    </svg>
+	</div>
+</div>
 <p><a href='/'>Cast more votes!</a></p>
+<script type="text/javascript">
+var data = [<% Choices.each do |id,text| %>
+{
+	"label": "<%= id %>",
+	"value": parseFloat("<%= @vote[id] %>")
+},
+<% end %>]
+createChart(data);
+</script>
+<style type="text/css">
+#chart svg {
+  height: 400px;
+}
+</style>

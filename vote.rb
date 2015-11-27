@@ -1,9 +1,17 @@
 require 'sinatra'
 require 'yaml/store'
 
+class Array
+  def sum
+    inject(0.0) { |result, el| result + el }
+  end
+
+  def mean 
+    sum / size
+  end
+end
 
 set :public_folder, File.dirname(__FILE__)
-
 
 get '/' do
   @title = 'jBudget - Democratizing financial decision making'
@@ -15,14 +23,14 @@ end
 post '/cast' do
   @title = 'Thanks for casting your vote!'
   @store = YAML::Store.new 'votes.yml'
+  @vote = {}
   Choices.each do |id,text|
-  	print id
-  	print text
+  	@vote[id] = text
   	@store.transaction do
-	  	@store[id] ||= {"key"=> id, "values"=> []}
-	  	# @store[id]["values"] || []
-		@store[id]["values"] = params[text]
-	end
+	  	@store[id] ||= {"key"=> id, "values"=> Array.new(), "avg" => 0}
+		  @store[id]["values"] << params[id].to_i()
+		  @store[id]["avg"] = @store[id]["values"].mean
+	  end
   end
   erb :cast
 end
@@ -31,7 +39,18 @@ end
 get '/results' do
   @title = 'Results so far:'
   @store = YAML::Store.new 'votes.yml'
-  @votes = @store.transaction { @store['votes'] }
+  @vote = {}
+  sum = 0
+  Choices.each do |id, text|
+  	@store.transaction do
+	  	sum += @store[id]["avg"]
+	  end
+  end
+  Choices.each do |id, text|
+    @store.transaction do
+      @vote[id] = (@store[id]["avg"]/sum)*100
+    end
+  end
   erb :results
 end
 

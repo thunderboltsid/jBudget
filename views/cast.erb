@@ -1,2 +1,7 @@
-<p>You cast: <%= Choices[@vote] %></p>
+<div>
+	You cast:
+	<% Choices.each do |id,text| %>
+		<p><%= id %>: <%= @vote[id] %></p>
+	<% end %>
+</div>
 <p><a href='/results'>See the results!</a></p>
